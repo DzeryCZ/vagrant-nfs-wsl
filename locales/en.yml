@@ -1,0 +1,9 @@
+---
+en:
+  vagrant_hanewin_nfs:
+    hosts:
+      windows:
+        nfs_export: |-
+          Preparing to edit nfs mounting file.
+        nfs_prune: |-
+          Pruning invalid NFS exports.
