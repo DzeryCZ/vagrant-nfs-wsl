@@ -9,17 +9,15 @@ if Vagrant::VERSION < "1.5.0"
 end
 
 module VagrantPlugins
-  module VagrantHanewinNfs
+  module VagrantNfsWsl
     class Plugin < Vagrant.plugin(2)
-      name 'vagrant-hanewin-nfs'
+      name 'vagrant-nfs-wsl'
 
       description <<-DESC
       This plugin adds NFS support on Windows for Vagrant with the Hanewin NFS Server.
       DESC
 
-      #action_hook(:init_i18n, :environment_load) { init_plugin }
-
-      config("vm") do |env|
+      config "vm" do |env|
         require_relative "config"
         Config
       end
@@ -65,7 +63,7 @@ module VagrantPlugins
       end
 
       def self.init_plugin
-        I18n.load_path << File.expand_path('locales/en.yml', VagrantHanewinNfs.source_root)
+        I18n.load_path << File.expand_path('locales/en.yml', VagrantNfsWsl.source_root)
         I18n.reload!
       end
 

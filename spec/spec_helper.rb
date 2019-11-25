@@ -1,3 +1,3 @@
 require "vagrant"
-require "vagrant-hanewin-nfs-wsl"
+require "vagrant-nfs-wsl"
 

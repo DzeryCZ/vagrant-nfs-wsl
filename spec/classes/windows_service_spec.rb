@@ -1,11 +1,11 @@
 require "vagrant"
-require "vagrant-hanewin-nfs-wsl/windows_service"
+require "vagrant-nfs-wsl/windows_service"
 
-describe VagrantPlugins::VagrantHanewinNfs::WindowsService do
+describe VagrantPlugins::VagrantNfsWsl::WindowsService do
 
   before(:each) do
     @name = 'service1'
-    @service = VagrantPlugins::VagrantHanewinNfs::WindowsService.new(@name)
+    @service = VagrantPlugins::VagrantNfsWsl::WindowsService.new(@name)
     @stdout_running = "adfadf\n  STATE              : 4  RUNNING \n asds"
     @stdout_stopped = "adfadf\n  STATE              : 1  STOPPED \n asds"
     @double_open3 = double('Open3')
@@ -93,7 +93,7 @@ describe VagrantPlugins::VagrantHanewinNfs::WindowsService do
   describe "not existing service" do
     before(:each) do
       @name = 'service_not1'
-      @service = VagrantPlugins::VagrantHanewinNfs::WindowsService.new(@name)
+      @service = VagrantPlugins::VagrantNfsWsl::WindowsService.new(@name)
     end
 
     describe '#status' do

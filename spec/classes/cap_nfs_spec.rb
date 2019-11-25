@@ -1,13 +1,13 @@
 require 'vagrant'
-require 'vagrant-hanewin-nfs-wsl/cap/nfs'
+require 'vagrant-nfs-wsl/cap/nfs'
 require 'tempfile'
 
 
-describe VagrantPlugins::VagrantHanewinNfs::Cap::NFS do
+describe VagrantPlugins::VagrantNfsWsl::Cap::NFS do
 
   before(:each) do
     @tempfile = Tempfile.new("nfs_config")
-    @NFS = VagrantPlugins::VagrantHanewinNfs::Cap::NFS
+    @NFS = VagrantPlugins::VagrantNfsWsl::Cap::NFS
     @NFS.stub(:nfs_config_file_path).and_return(@tempfile.path)
 
     @host = double()

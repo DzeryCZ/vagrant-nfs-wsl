@@ -1,21 +1,20 @@
 require 'open3'
 
 module VagrantPlugins
-  module VagrantHanewinNfs 
+  module VagrantNfsWsl 
     # Class reprents a windows service and allows
     # to control this service via the sc command
     class WindowsService
 
       def initialize(name)
         @name = name
-        @sc_cmd = "sc.exe"
-        @logger = Log4r::Logger.new("vagrant::hosts::windows")
-
+        @sc_cmd = 'sc.exe'
+        @logger = Log4r::Logger.new('vagrant::hosts::windows')
       end
 
       # Run sc command
       def run_cmd(command)
-        cmd = "#{@sc_cmd} #{command} \"#{@name}\""
+        cmd = "#{@sc_cmd} #{command} #{@name}"
         @logger.debug "WindowsServer run cmd #{cmd}"
         stdout, stderr, status = Open3.capture3(cmd)
 
@@ -28,15 +27,19 @@ module VagrantPlugins
           allowed_exitstatus = [0]
         end
 
+        if !stderr.nil?
+          @logger.error "WindowsServer error #{stderr}"
+        end
+
         # Check exitstatus
         if allowed_exitstatus.include? status.exitstatus
           return stdout
         elsif status.exitstatus == 5
-          raise "Permission denied"
+          raise 'Permission denied'
         elsif [36,103].include? status.exitstatus
-          raise "Service #{@name} not found"
+          raise 'Service #{@name} not found'
         else
-          raise "Unknown return code #{status.exitstatus}: #{stdout}"    
+          raise 'Unknown return code #{status.exitstatus}: #{stdout}'    
         end
       end
 
@@ -69,11 +72,13 @@ module VagrantPlugins
       # Waits until service has desired state
       def wait_for_status(state,sleep_duration=0.1, max_tries=20)
         try = 0
+        
         while status != state do
+          printf("%s", status)
           try += 1
           sleep(sleep_duration)
           if try >= max_tries 
-            raise "Error waiting for state '#{state}'"
+            raise 'Error waiting for state '#{state}''
           end
         end
       end

@@ -1,6 +1,6 @@
 ---
 en:
-  vagrant_hanewin_nfs:
+  vagrant_nfs_wsl:
     hosts:
       windows:
         nfs_export: |-

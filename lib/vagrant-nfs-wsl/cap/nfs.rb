@@ -1,12 +1,20 @@
-require 'vagrant-hanewin-nfs'
-require 'vagrant-hanewin-nfs/windows_service'
+require 'vagrant-nfs-wsl'
+require 'vagrant-nfs-wsl/windows_service'
 
 module VagrantPlugins
-  module VagrantHanewinNfs
+  module VagrantNfsWsl
     module Cap
       class NFS
+
+        def initialize(maniche, config)
+          @config = config
+
+          printf("---- config\n")
+
+        end
+
         def self.nfs_config_file_path
-          VagrantHanewinNfs.get_nfs_dir.join('exports')
+          VagrantNfsWsl.get_nfs_dir.join('exports')
         end
 
         def self.logger
@@ -28,10 +36,6 @@ module VagrantPlugins
               ips.each do |ip|
                 output += "%s -mapall:1000:1000 -exec -alldirs %s ##VAGRANT#%s#\n" % [opts[:hostpath].gsub('/', '\\'),ip,id]
               end
-
-              # Add mountoptions
-              # opts[:mount_options] = ['vers=3','udp','nolock']
-
             end
 
             # Remove entries with id
@@ -39,12 +43,6 @@ module VagrantPlugins
 
             # Append to config
             logger.info("Write nfs exports")
-            # @todo This will add paths with \c\blahblah instead of c:\blahblah
-            # open(nfs_config_file_path, 'a') do |f|
-            #   f.write output
-            #   f.flush
-            #   f.close
-            # end
 
             # restart nfs
             logger.info("Restart nfs")
